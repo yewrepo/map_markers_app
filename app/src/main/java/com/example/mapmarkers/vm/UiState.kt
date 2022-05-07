@@ -1,4 +1,4 @@
-package com.example.mapmarkers
+package com.example.mapmarkers.vm
 
 import com.example.mapmarkers.marker.MyMarker
 

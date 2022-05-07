@@ -11,6 +11,9 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import com.example.mapmarkers.databinding.ActivityMainBinding
 import com.example.mapmarkers.repo.MarkerRepositoryImpl
+import com.example.mapmarkers.vm.EditMarker
+import com.example.mapmarkers.vm.MarkersViewModel
+import com.example.mapmarkers.vm.ViewModelFactory
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {

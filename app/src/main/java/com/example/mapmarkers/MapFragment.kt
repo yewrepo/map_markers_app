@@ -12,6 +12,10 @@ import com.example.mapmarkers.marker.MyMarker
 import com.example.mapmarkers.marker.addTagMarker
 import com.example.mapmarkers.marker.getOptions
 import com.example.mapmarkers.repo.MarkerRepositoryImpl
+import com.example.mapmarkers.vm.EditMarker
+import com.example.mapmarkers.vm.MarkersViewModel
+import com.example.mapmarkers.vm.SaveMarker
+import com.example.mapmarkers.vm.ViewModelFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment

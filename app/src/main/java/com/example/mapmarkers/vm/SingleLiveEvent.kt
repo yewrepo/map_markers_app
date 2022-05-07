@@ -1,4 +1,4 @@
-package com.example.mapmarkers
+package com.example.mapmarkers.vm
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

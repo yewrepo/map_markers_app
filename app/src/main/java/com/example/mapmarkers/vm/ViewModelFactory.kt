@@ -1,4 +1,4 @@
-package com.example.mapmarkers
+package com.example.mapmarkers.vm
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
