@@ -1,6 +1,7 @@
 package com.example.mapmarkers.repo
 
 import com.example.mapmarkers.marker.MyMarker
+import timber.log.Timber
 
 class MarkerRepositoryImpl : MarkerRepository {
 
@@ -8,6 +9,11 @@ class MarkerRepositoryImpl : MarkerRepository {
 
     override fun addMarker(marker: MyMarker) {
         markerList.add(marker.copy(id = getMarkers().size))
+    }
+
+    override fun removeMarker(marker: MyMarker) {
+        val isSuccess = markerList.remove(marker)
+        Timber.e("isSuccess: $isSuccess")
     }
 
     override fun getMarkers() = markerList

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.uiState.observe(this) { state ->
             Timber.i("state: ${state.state}")
-            if (state.state is AddMarker) {
+            if (state.state is EditMarker) {
                 binding.fab.hide()
             } else {
                 binding.fab.show()

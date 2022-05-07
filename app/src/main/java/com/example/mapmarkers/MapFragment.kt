@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.mapmarkers.databinding.FragmentMapBinding
 import com.example.mapmarkers.marker.MyMarker
+import com.example.mapmarkers.marker.addTagMarker
 import com.example.mapmarkers.marker.getOptions
 import com.example.mapmarkers.repo.MarkerRepositoryImpl
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MarkerOptions
 import timber.log.Timber
-
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -59,42 +57,34 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             viewModel.cancelEdit()
         }
 
+        viewModel.userMarker.observe(viewLifecycleOwner) { marker ->
+            map.addMarker(marker.getOptions())
+        }
+
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             Timber.i("state: $state")
-            if (state.state is AddMarker) {
-                isEditing = true
-                showAddMarkerLayout()
-            } else {
-                isEditing = false
-                showCommonLayout(state.myMarkers)
-            }
-        }
-    }
 
-    private fun showCommonLayout(myMarkers: List<MyMarker>) {
-        binding.editPanel.isVisible = false
-        if (this::map.isInitialized) {
-            map.clear()
-            myMarkers.forEach {
-                map.addMarker(it.getOptions())
+            when (state.state) {
+                is EditMarker -> {
+                    isEditing = true
+                    showAddMarkerLayout()
+                }
+                is SaveMarker -> {
+                    isEditing = false
+                    showEditDialog(state.myMarkers)
+                }
+                else -> {
+                    isEditing = false
+                    showCommonLayout(state.myMarkers)
+                }
             }
-        }
-    }
-
-    private fun showAddMarkerLayout() {
-        viewModel.setEditedMarker(
-            map.addMarker(
-                MyMarker.empty(map.cameraPosition.target).getOptions()
-            )
-        )
-        binding.apply {
-            editPanel.isVisible = true
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        map.setOnInfoWindowClickListener(null)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -104,13 +94,37 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             it.isCompassEnabled = true
             it.isZoomControlsEnabled = true
         }
-
-        map.setOnCameraChangeListener {
+        map.setOnInfoWindowClickListener {
+            Timber.i("on marker ${it.tag} click")
+            viewModel.editMarker(it.tag as MyMarker)
+        }
+        map.setOnCameraChangeListener { position ->
             if (isEditing) {
                 Timber.e("moving")
                 map.clear()
-                viewModel.setEditedMarker(map.addMarker(MyMarker.empty(it.target).getOptions()))
+                viewModel.uiState.value?.myMarkers?.onEach { map.addTagMarker(it) }
+                viewModel.setUserMarker(MyMarker.empty(position.target))
             }
         }
     }
+
+    private fun showEditDialog(myMarkers: List<MyMarker>) {
+
+    }
+
+    private fun showCommonLayout(myMarkers: List<MyMarker>) {
+        binding.editPanel.isVisible = false
+        if (this::map.isInitialized) {
+            map.clear()
+            myMarkers.forEach { map.addTagMarker(it) }
+        }
+    }
+
+    private fun showAddMarkerLayout() {
+        binding.editPanel.isVisible = true
+        val newMarker = MyMarker.empty(map.cameraPosition.target)
+        map.addMarker(newMarker.getOptions())
+        viewModel.editMarker(newMarker)
+    }
+
 }

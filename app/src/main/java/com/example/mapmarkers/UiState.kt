@@ -3,9 +3,8 @@ package com.example.mapmarkers
 import com.example.mapmarkers.marker.MyMarker
 
 object None : State()
-object ShowList : State()
 object SaveMarker : State()
-object AddMarker : State()
+object EditMarker : State()
 
 sealed class State
 

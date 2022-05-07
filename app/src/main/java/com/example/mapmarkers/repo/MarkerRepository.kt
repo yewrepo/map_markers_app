@@ -6,5 +6,7 @@ interface MarkerRepository {
 
     fun addMarker(marker: MyMarker)
 
+    fun removeMarker(marker: MyMarker)
+
     fun getMarkers(): List<MyMarker>
 }
