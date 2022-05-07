@@ -9,4 +9,6 @@ interface MarkerRepository {
     fun removeMarker(marker: MyMarker)
 
     fun getMarkers(): List<MyMarker>
+
+    fun updateMarker(marker: MyMarker)
 }

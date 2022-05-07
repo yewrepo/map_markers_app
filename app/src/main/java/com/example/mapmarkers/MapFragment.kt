@@ -100,7 +100,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         map.setOnInfoWindowClickListener {
             Timber.i("on marker ${it.tag} click")
-            viewModel.editMarker(it.tag as MyMarker)
+            EditBottomDialog.getInstance(it.tag as MyMarker)
+                .show(childFragmentManager, EditBottomDialog.TAG)
         }
         map.setOnCameraChangeListener { position ->
             if (isEditing) {

@@ -50,6 +50,14 @@ class MarkersViewModel(
         postState(UiState(EditMarker, repo.getMarkers()))
     }
 
+    fun editMarker(markerId: Int) {
+        repo.getMarkers().find {
+            it.id == markerId
+        }?.apply {
+            editMarker(this)
+        }
+    }
+
     private fun postState(state: UiState) {
         if (_uiState.value != state) {
             _uiState.postValue(state)
@@ -59,6 +67,24 @@ class MarkersViewModel(
     fun setUserMarker(empty: MyMarker) {
         _editableMarker.value?.apply {
             _userMarker.postValue(this.copy(latLng = empty.latLng))
+        }
+    }
+
+    fun saveCaption(markerId: Int, caption: String) {
+        repo.getMarkers().find {
+            it.id == markerId
+        }?.apply {
+            repo.updateMarker(this.copy(caption = caption))
+            _uiState.postValue(UiState(None, repo.getMarkers()))
+        }
+    }
+
+    fun deleteMarker(markerId: Int) {
+        repo.getMarkers().find {
+            it.id == markerId
+        }?.apply {
+            repo.removeMarker(this)
+            _uiState.postValue(UiState(None, repo.getMarkers()))
         }
     }
 }
