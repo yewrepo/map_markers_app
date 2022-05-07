@@ -100,7 +100,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         map.setOnCameraChangeListener { position ->
             if (isEditing) {
-                Timber.e("moving")
                 map.clear()
                 viewModel.uiState.value?.myMarkers?.onEach { map.addTagMarker(it) }
                 viewModel.setUserMarker(MyMarker.empty(position.target))

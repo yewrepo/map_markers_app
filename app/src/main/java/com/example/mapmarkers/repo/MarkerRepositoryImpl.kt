@@ -13,7 +13,7 @@ class MarkerRepositoryImpl : MarkerRepository {
 
     override fun removeMarker(marker: MyMarker) {
         val isSuccess = markerList.remove(marker)
-        Timber.e("isSuccess: $isSuccess")
+        Timber.i("removeMarker: $isSuccess")
     }
 
     override fun getMarkers() = markerList

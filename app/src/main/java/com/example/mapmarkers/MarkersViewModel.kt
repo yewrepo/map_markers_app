@@ -25,7 +25,7 @@ class MarkersViewModel(
         get() = _uiState
 
     fun addMarkerClick() {
-        postState(UiState(EditMarker))
+        postState(UiState(EditMarker, repo.getMarkers()))
     }
 
     fun cancelEdit() {
@@ -47,7 +47,7 @@ class MarkersViewModel(
     fun editMarker(myMarker: MyMarker) {
         repo.removeMarker(myMarker)
         _editableMarker.postValue(myMarker)
-        postState(UiState(EditMarker))
+        postState(UiState(EditMarker, repo.getMarkers()))
     }
 
     private fun postState(state: UiState) {
