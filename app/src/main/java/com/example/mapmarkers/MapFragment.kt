@@ -15,9 +15,11 @@ import com.example.mapmarkers.repo.MarkerRepositoryImpl
 import com.example.mapmarkers.vm.EditMarker
 import com.example.mapmarkers.vm.MarkersViewModel
 import com.example.mapmarkers.vm.ViewModelFactory
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import timber.log.Timber
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -78,6 +80,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
+
+        viewModel.cameraMarker.observe(viewLifecycleOwner) { marker ->
+            moveCamera(marker.latLng)
+        }
+    }
+
+    private fun moveCamera(latLng: LatLng) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 50f))
     }
 
     override fun onDestroyView() {

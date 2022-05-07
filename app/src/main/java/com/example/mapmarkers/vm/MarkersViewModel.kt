@@ -18,6 +18,14 @@ class MarkersViewModel(
     val userMarker: LiveData<MyMarker>
         get() = _userMarker
 
+    private val _markers = MutableLiveData<List<MyMarker>>()
+    val markers: LiveData<List<MyMarker>>
+        get() = _markers
+
+    private val _cameraMarker = MutableLiveData<MyMarker>()
+    val cameraMarker: LiveData<MyMarker>
+        get() = _cameraMarker
+
     private val _uiState = MutableLiveData(UiState(None, repo.getMarkers()))
     val uiState: LiveData<UiState>
         get() = _uiState
@@ -83,6 +91,16 @@ class MarkersViewModel(
         }?.apply {
             repo.removeMarker(this)
             _uiState.postValue(UiState(None, repo.getMarkers()))
+        }
+    }
+
+    fun loadList() {
+        _markers.postValue(repo.getMarkers())
+    }
+
+    fun moveCamera(myMarker: MyMarker?) {
+        myMarker?.apply {
+            _cameraMarker.postValue(this)
         }
     }
 }

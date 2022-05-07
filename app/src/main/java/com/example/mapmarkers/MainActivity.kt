@@ -1,6 +1,8 @@
 package com.example.mapmarkers
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -46,6 +48,21 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.fab.show()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_list -> {
+                ListBottomDialog.getInstance().show(supportFragmentManager, ListBottomDialog.TAG)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
