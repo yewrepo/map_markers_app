@@ -13,8 +13,6 @@ class MarkersViewModel(
 ) : AndroidViewModel(app) {
 
     private val _editableMarker = MutableLiveData<MyMarker>()
-    val editableMarker: LiveData<MyMarker>
-        get() = _editableMarker
 
     private val _userMarker = MutableLiveData<MyMarker>()
     val userMarker: LiveData<MyMarker>

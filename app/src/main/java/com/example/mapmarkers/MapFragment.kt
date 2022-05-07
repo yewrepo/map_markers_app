@@ -14,7 +14,6 @@ import com.example.mapmarkers.marker.getOptions
 import com.example.mapmarkers.repo.MarkerRepositoryImpl
 import com.example.mapmarkers.vm.EditMarker
 import com.example.mapmarkers.vm.MarkersViewModel
-import com.example.mapmarkers.vm.SaveMarker
 import com.example.mapmarkers.vm.ViewModelFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -71,11 +70,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             when (state.state) {
                 is EditMarker -> {
                     isEditing = true
-                    showAddMarkerLayout()
-                }
-                is SaveMarker -> {
-                    isEditing = false
-                    showEditDialog(state.myMarkers)
+                    showEditMarkerLayout()
                 }
                 else -> {
                     isEditing = false
@@ -112,10 +107,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun showEditDialog(myMarkers: List<MyMarker>) {
-
-    }
-
     private fun showCommonLayout(myMarkers: List<MyMarker>) {
         binding.editPanel.isVisible = false
         if (this::map.isInitialized) {
@@ -124,11 +115,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun showAddMarkerLayout() {
+    private fun showEditMarkerLayout() {
         binding.editPanel.isVisible = true
         val newMarker = MyMarker.empty(map.cameraPosition.target)
         map.addMarker(newMarker.getOptions())
         viewModel.editMarker(newMarker)
+        viewModel.setUserMarker(newMarker)
     }
 
 }
